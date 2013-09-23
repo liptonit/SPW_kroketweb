@@ -6,10 +6,10 @@
 window.onload = function()
 {
     var inputs = document.getElementsByTagName('input');
-//    console.log(inputs);
+   console.log("INPUTS: ", inputs);
     for (var i = 0; i < inputs.length; i++) {
-        console.log('test');
         var input = inputs[i];
+        console.log("INPUT: ", input);
 //        console.log(input);
         var value = input.value;
         input.addEventListener("change", function() {
