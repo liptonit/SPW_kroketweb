@@ -1,0 +1,17 @@
+body { font-family: lucinda, helvetica; font-size: 16px; }
+
+a, a:visited { color: #ff9999; text-decoration: none; }
+a:hover {background-color: blue;}
+nav a.active { background-color: red;}
+h3 { margin-top:0px; padding-top:0px; }
+
+.top { position: absolute; left:20px; top:20px; width: 980px; height: 60px; }
+.left { position: absolute; left: 20px; top: 90px; width: 100px; height: 400px; }
+.middle { -webkit-column-count: 2; -webkit-column-gap: 40px; -webkit-column-rule: 1px solid #2e2e2e; position: absolute; left: 130px; top: 90px; width: 660px; height: 400px; text-align: justify; padding-left: 5px; padding-right: 5px;}
+aside { position: absolute; left: 810px; top: 90px; width: 190px; height: 400px; }
+.sponsortitle { font-weight: bold; }
+ul.sponsorlist { list-style-type: none; padding-left: 0px; }
+
+/* Assortiment */
+tr:nth-child(odd) { background-color:#eee; }
+tr:nth-child(even) { background-color:#fff; }
