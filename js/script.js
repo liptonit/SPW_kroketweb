@@ -14,6 +14,9 @@ window.onload = function()
         input.addEventListener("change", function() {
             if (!validate(this.value)) {
                 this.style.border = "1px solid red";
+            } else {
+                var parent = this.parentNode.parentNode;
+                var shoppingcar = document.getElementById('shoppingcar').tBodies.item(0).appendChild(parent);
             }
         });
     }
