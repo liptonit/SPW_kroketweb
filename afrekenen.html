@@ -4,6 +4,7 @@
         <meta charset="UTF-8"/>
         <title>Welkom bij KroketWeb - Bestel je vette hap online</title>
         <link href="css/default.css" rel="stylesheet" type="text/css"/>
+        <script src="js/script.js" ></script>
     </head>
 
     <body>
@@ -21,7 +22,7 @@
 
         <div class="middle">
             <h3>Afrekenen</h3>
-            <form>
+            <form name="order" onsubmit="return validateForm();" method="POST" action="afrekenen.html">
                 <fieldset>
                     <legend>Inhoud winkelwagen</legend>
                     <table>
@@ -66,7 +67,7 @@
                 </fieldset>
                 <br />
 
-                <input type="button" value="Plaats bestelling"/>
+                <input type="submit" value="Plaats bestelling"/>
             </form>
         </div>
         <aside>

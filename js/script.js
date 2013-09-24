@@ -76,4 +76,35 @@ window.onload = function()
         
         return false;
     }
+    
+
 };
+
+    function validateForm() {  
+        var myInput     = document.forms["order"]["myInput"];   // naam
+        var myInput2    = document.forms["order"]["myInput2"];  // straat + huisnr
+        var myInput3    = document.forms["order"]["myInput3"];  // plaats
+        var area        = document.forms["order"]["area"];      // telefoonnummer
+        var valid       = true;                                 // validatie           
+        
+        if(myInput.value == null || myInput.value == "") {
+            myInput.style.border = "1px solid red";
+            valid = false;
+        }
+        
+        if(myInput2.value == null || myInput2.value == "") {
+            myInput2.style.border = "1px solid red";
+            valid = false;
+        }
+        
+        if(myInput3.value == null || myInput3.value == "") {
+            myInput3.style.border = "1px solid red";
+            valid = false;
+        }
+        
+        if(area.value == null || area.value == "") {
+            area.style.border = "1px solid red";
+            valid = false;
+        }
+        return valid;
+    }
