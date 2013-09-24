@@ -16,19 +16,12 @@ window.onload = function()
                 this.style.border = "1px solid red";
             } else {
                 var parent = this.parentNode.parentNode;
-                console.log("PARENT", parent);
 
                 var childs = parent.children;
-
-                console.log("CHILDS", childs);
 
                 var name = childs[0];
                 var price = childs[1];
                 var amount = childs[3];
-
-                console.log("NAME", name);
-                console.log("PRICE", price);
-                console.log("AMOUNT", amount);
 
                 parent.innerHTML = "";
 
