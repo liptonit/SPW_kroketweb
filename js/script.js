@@ -8,6 +8,8 @@ window.onload = function()
     var inputs = document.getElementById('itemlist').getElementsByTagName('input');
     var totalTotalPrice = 0;
 
+    var amounts = [];
+
     var  totalpriceF = function(splittedPrice) {
                     var newPrice = "";
                     if(splittedPrice.length == 1) {
@@ -38,19 +40,22 @@ window.onload = function()
             if (!validate(this.value)) {
                 this.style.border = "1px solid red";
             } else {
-                this.removeEventListener();
+                this.removeEventListener("change");
                 var parent = this.parentNode.parentNode;
+
+                amounts[i] = {amount : parseFloat(parent.children[3].getElementsByTagName('input')[0].value), price : parseFloat(parent.children[1].innerHTML.replace(",", "."))};
 
                 var childs = parent.children;
 
                 var name = childs[0];
                 var price = childs[1];
-                var amount = childs[3];
+
+                var amount = childs[3].cloneNode(true);
 
                 parent.innerHTML = "";
 
                 parent.appendChild(name);
-                parent.appendChild(amount);
+                parent.appendChild(amount.cloneNode(true));
                 parent.appendChild(price);
 
                 var total = document.createElement('td');
@@ -60,11 +65,7 @@ window.onload = function()
                 var pricePerPiece = parseFloat(price.innerHTML.replace(",", "."));
                 var totalprice = pricePerPiece * totalAmount;
 
-
-
                 var totalpricepieces = new String(totalprice).split(".");
-
-               
 
                 totalprice = totalpriceF(totalpricepieces);
                 total.innerHTML = totalprice;
@@ -73,30 +74,38 @@ window.onload = function()
                 var shoppingcar = document.getElementById('shoppingcar').tBodies.item(0).appendChild(parent);
 
                 totalTotalPrice = parseFloat(totalTotalPrice) + parseFloat(totalprice);
-                totalTotalPricePieces = new String(totalTotalPrice).split(",");
-                totalTotalPrice = totalpriceF(totalTotalPricePieces);
-                document.getElementById('totaltotal').innerHTML = totalTotalPrice;
+                // totalTotalPricePieces = new String(totalTotalPrice).split(",");
+                // totalTotalPrice = totalpriceF(totalTotalPricePieces);
+                document.getElementById('totaltotal').innerHTML = totalpriceF(new String(totalTotalPrice).split("."));
 
-                addChangeEventToShopCarItem(this);
-                // this.addEventListener("change", function() {
-                //     this.parent.parent.childs[3].innerHTML = "";
-                //     var totalPrice = parseInt(this.value) * parseFloat(this.parent.parent.childs[2].innerHTML);
-                //     var totalPricePieces = new String(totalPrice).split(".");
-                //     totalPrice = totalpriceF(totalPricePieces);
-                //     this.parent.parent.childs[3].innerHTML = totalPrice;
-                // }, false);
+                var newInputField = parent.getElementsByTagName('input')[0];
+                addChangeEventToShopCarItem(newInputField, i);
             }
         }, false);
     }
 
-    function addChangeEventToShopCarItem(item) {
-         item.addEventListener("change", function() {
-                    item.parent.parent.childs[3].innerHTML = "";
-                    var totalPrice = parseInt(item.value) * parseFloat(item.parent.parent.childs[2].innerHTML);
-                    var totalPricePieces = new String(totalPrice).split(".");
-                    totalPrice = totalpriceF(totalPricePieces);
-                    item.parent.parent.childs[3].innerHTML = totalPrice;
-                }, false);
+    function addChangeEventToShopCarItem(item, indexOld) {
+        var oldValue = parseFloat(this)
+        // var item = item.parentNode;
+        item.addEventListener("change", function() {
+            
+            var oldValue = amounts[indexOld].amount * amounts[indexOld].price;
+            var newValue = parseFloat(this.value) * amounts[indexOld].price;
+
+            var dif = newValue - oldValue;
+
+            amounts[indexOld].amount = parseFloat(this.value);
+
+            totalTotalPrice = parseFloat(totalTotalPrice) + dif;
+
+            this.parentNode.parentNode.children[3].innerHTML = "";
+            var totalPrice = parseFloat(this.value) * parseFloat(this.parentNode.parentNode.children[2].innerHTML.replace(",", "."));
+            var totalPricePieces = new String(totalPrice).split(".");
+            totalPrice = totalpriceF(totalPricePieces);
+            this.parentNode.parentNode.children[3].innerHTML = totalPrice;
+
+            document.getElementById('totaltotal').innerHTML = totalpriceF(new String(totalTotalPrice).split("."));
+        }, false);
     }
 
     function validate(value) {
