@@ -88,7 +88,8 @@
                 $times = $database->amountOfArticles() / 10;
                 for($i=0; $i<$times; $i++) {
                     $pager = "";
-                    if($_GET['page'] == $i+1 || !isset($_GET['page'])) {
+                    $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+                    if($page == $i+1) {
                         $pager = "<a href='assortiment.php?page=".($i+1)."'><b>".($i+1)."</b></a>";
                     } else {
                         $pager ="<a href='assortiment.php?page=".($i+1)."'>".($i+1)."</a>";
