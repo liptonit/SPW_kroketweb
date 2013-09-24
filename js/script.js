@@ -44,7 +44,20 @@ window.onload = function()
                 var totalprice = pricePerPiece * totalAmount;
 
                 var totalpricepieces = new String(totalprice).split(".");
-                totalprice = (totalpricepieces[1].length == 1) ? totalpricepieces[0]+","+totalpricepieces[1]+"0" : totalpricepieces[0]+","+totalpricepieces[1];
+
+                totalprice = function() {
+                    if(totalpricepieces.length == 1) {
+                        return totalpricepieces[0]+",00";
+                    } else {
+                        if(totalpricepieces[1].length == 1) {
+                            return totalpricepieces[0]+","+totalpricepieces[1]+"0";
+                        } else {
+                            return totalpricepieces[0]+","+totalpricepieces[1];
+                        }
+                    }
+                };
+
+                totalprice = totalprice();
 
                 total.innerHTML = totalprice;
                 parent.appendChild(total);
