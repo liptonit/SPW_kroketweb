@@ -17,7 +17,7 @@ class Database {
 		$start = $start * 10;
 
 		$query = "SELECT * FROM product LIMIT ".$start.", 10";
-		var_dump($query);
+//		var_dump($query);
 		$result = mysql_query($query);
 		while($row = mysql_fetch_assoc($result)) {
 			$articles[] = $row;

@@ -58,8 +58,10 @@ window.onload = function()
 
                 parent.innerHTML = "";
                 
-                var rowObject = {name: name, amount: amount.getElementsByTagName('input')[0].value, price: price}
-                sessionStorage.setItem(i, rowObject);
+                var rowObject = {"name": name.innerHTML, "amount": amount.getElementsByTagName('input')[0].value, "price": price.innerHTML}
+                sessionStorage.setItem(sessionStorage.length, JSON.stringify(rowObject));
+                
+                console.log(rowObject);
                 
                 parent.appendChild(name);
                 parent.appendChild(amount.cloneNode(true));
@@ -141,11 +143,18 @@ if(sessionStorage.length > 0) {
         cellAmount.setAttribute('id', 'amount');
         cellPrice.setAttribute('id', 'price');
         
-//        var test = sessionStorage.getItem();
+        var test = sessionStorage;
+        console.log(test);
         
-        cellName.innerHTML      = sessionStorage.getItem(i);
-        cellAmount.innerHTML    = sessionStorage.getItem(i);
-        cellPrice.innerHTML     = sessionStorage.getItem(i);
+        cellName.innerHTML      = JSON.parse(sessionStorage.getItem(i)).name;
+        cellAmount.innerHTML    = JSON.parse(sessionStorage.getItem(i)).amount;
+        cellPrice.innerHTML     = JSON.parse(sessionStorage.getItem(i)).price;
+        
+        row.appendChild(cellName);
+        row.appendChild(cellAmount);
+        row.appendChild(cellPrice);
+        
+        shoppingcar.appendChild(row);
     }
 }
 
