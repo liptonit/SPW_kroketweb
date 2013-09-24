@@ -8,7 +8,9 @@ window.onload = function()
     
     var inputs = document.getElementById('itemlist').getElementsByTagName('input');
     var totalTotalPrice = 0;
-    var shoppingCartKeys= new Array();
+
+
+    var amounts = [];
 
     var totalpriceF = function(splittedPrice) {
         var newPrice = "";
@@ -32,7 +34,6 @@ window.onload = function()
     
     
 
-
     // console.log("INPUTS: ", inputs);
     for (var i = 0; i < inputs.length; i++) {
         var input = inputs[i];
@@ -42,14 +43,18 @@ window.onload = function()
             if (!validate(this.value)) {
                 this.style.border = "1px solid red";
             } else {
-                this.removeEventListener();
-                var parent = this.parentNode.parentNode;                
+
+                this.removeEventListener("change");
+                var parent = this.parentNode.parentNode;
+
+                amounts[i] = {amount : parseFloat(parent.children[3].getElementsByTagName('input')[0].value), price : parseFloat(parent.children[1].innerHTML.replace(",", "."))};
 
                 var childs = parent.children;
 
                 var name = childs[0];
                 var price = childs[1];
-                var amount = childs[3];
+
+                var amount = childs[3].cloneNode(true);
 
                 parent.innerHTML = "";
                 
@@ -57,7 +62,7 @@ window.onload = function()
                 sessionStorage.setItem(i, rowObject);
                 
                 parent.appendChild(name);
-                parent.appendChild(amount);
+                parent.appendChild(amount.cloneNode(true));
                 parent.appendChild(price);
 
                 var total = document.createElement('td');
@@ -76,44 +81,48 @@ window.onload = function()
                 var shoppingcar = document.getElementById('shoppingcar').tBodies.item(0).appendChild(parent);
 
                 totalTotalPrice = parseFloat(totalTotalPrice) + parseFloat(totalprice);
-                totalTotalPricePieces = new String(totalTotalPrice).split(",");
-                totalTotalPrice = totalpriceF(totalTotalPricePieces);
-                document.getElementById('totaltotal').innerHTML = totalTotalPrice;
+                document.getElementById('totaltotal').innerHTML = totalpriceF(new String(totalTotalPrice).split("."));
 
-                addChangeEventToShopCarItem(this);
-                // this.addEventListener("change", function() {
-                //     this.parent.parent.childs[3].innerHTML = "";
-                //     var totalPrice = parseInt(this.value) * parseFloat(this.parent.parent.childs[2].innerHTML);
-                //     var totalPricePieces = new String(totalPrice).split(".");
-                //     totalPrice = totalpriceF(totalPricePieces);
-                //     this.parent.parent.childs[3].innerHTML = totalPrice;
-                // }, false);
+                var newInputField = parent.getElementsByTagName('input')[0];
+                addChangeEventToShopCarItem(newInputField, i);
             }
         }, false);
     }
 
-    function addChangeEventToShopCarItem(item) {
+
+    function addChangeEventToShopCarItem(item, indexOld) {
+        var oldValue = parseFloat(this)
+        // var item = item.parentNode;
         item.addEventListener("change", function() {
-            item.parent.parent.childs[3].innerHTML = "";
-            var totalPrice = parseInt(item.value) * parseFloat(item.parent.parent.childs[2].innerHTML);
+            
+            var oldValue = amounts[indexOld].amount * amounts[indexOld].price;
+            var newValue = parseFloat(this.value) * amounts[indexOld].price;
+
+            var dif = newValue - oldValue;
+
+            amounts[indexOld].amount = parseFloat(this.value);
+
+            totalTotalPrice = parseFloat(totalTotalPrice) + dif;
+
+            this.parentNode.parentNode.children[3].innerHTML = "";
+            var totalPrice = parseFloat(this.value) * parseFloat(this.parentNode.parentNode.children[2].innerHTML.replace(",", "."));
             var totalPricePieces = new String(totalPrice).split(".");
             totalPrice = totalpriceF(totalPricePieces);
-            item.parent.parent.childs[3].innerHTML = totalPrice;
+            this.parentNode.parentNode.children[3].innerHTML = totalPrice;
+
+            document.getElementById('totaltotal').innerHTML = totalpriceF(new String(totalTotalPrice).split("."));
+
         }, false);
     }
 
     function validate(value) {
-        // console.log('VALIDATE: ', value);
         value = value.replace(" ", "");
 
         if (value.length > 0) {
-            // console.log("VALUE FOUND: ", value);
             var regExpr = new RegExp("^[0-9]*$");
             if (regExpr.test(value)) {
-                // console.log("TESTED AND PASSED: ", value);
                 return true;
             }
-            // console.log("TESTED AND FAILED: ", value);
         }
 
         return false;
@@ -132,9 +141,7 @@ if(sessionStorage.length > 0) {
         cellAmount.setAttribute('id', 'amount');
         cellPrice.setAttribute('id', 'price');
         
-        var test = sessionStorage.getItem();
-        
-        console.log(shoppingCartKeys);
+//        var test = sessionStorage.getItem();
         
         cellName.innerHTML      = sessionStorage.getItem(i);
         cellAmount.innerHTML    = sessionStorage.getItem(i);
