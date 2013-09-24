@@ -109,17 +109,13 @@ window.onload = function()
     }
 
     function validate(value) {
-        // console.log('VALIDATE: ', value);
         value = value.replace(" ", "");
 
         if (value.length > 0) {
-            // console.log("VALUE FOUND: ", value);
             var regExpr = new RegExp("^[0-9]*$");
             if (regExpr.test(value)) {
-                // console.log("TESTED AND PASSED: ", value);
                 return true;
             }
-            // console.log("TESTED AND FAILED: ", value);
         }
 
         return false;
