@@ -5,8 +5,10 @@
 
 window.onload = function()
 {
+    
     var inputs = document.getElementById('itemlist').getElementsByTagName('input');
     var totalTotalPrice = 0;
+    var shoppingCartKeys= new Array();
 
     var totalpriceF = function(splittedPrice) {
         var newPrice = "";
@@ -27,6 +29,8 @@ window.onload = function()
 
         return newPrice;
     };
+    
+    
 
 
     // console.log("INPUTS: ", inputs);
@@ -39,7 +43,7 @@ window.onload = function()
                 this.style.border = "1px solid red";
             } else {
                 this.removeEventListener();
-                var parent = this.parentNode.parentNode;
+                var parent = this.parentNode.parentNode;                
 
                 var childs = parent.children;
 
@@ -48,7 +52,10 @@ window.onload = function()
                 var amount = childs[3];
 
                 parent.innerHTML = "";
-
+                
+                var rowObject = {name: name, amount: amount.getElementsByTagName('input')[0].value, price: price}
+                sessionStorage.setItem(i, rowObject);
+                
                 parent.appendChild(name);
                 parent.appendChild(amount);
                 parent.appendChild(price);
@@ -60,11 +67,7 @@ window.onload = function()
                 var pricePerPiece = parseFloat(price.innerHTML.replace(",", "."));
                 var totalprice = pricePerPiece * totalAmount;
 
-
-
                 var totalpricepieces = new String(totalprice).split(".");
-
-
 
                 totalprice = totalpriceF(totalpricepieces);
                 total.innerHTML = totalprice;
@@ -116,15 +119,37 @@ window.onload = function()
         return false;
     }
 
+if(sessionStorage.length > 0) {
+    var shoppingcar = document.getElementById('shoppingcar').getElementsByTagName('tbody')[0];
+    for(var i = 0; i < sessionStorage.length; i++) {
+//        sessionStorage.getItem(); // name is the key
+        var row         = document.createElement('tr');
+        var cellName    = document.createElement('td');
+        var cellAmount  = document.createElement('td');
+        var cellPrice   = document.createElement('td');
+        
+        cellName.setAttribute('id', 'productname');
+        cellAmount.setAttribute('id', 'amount');
+        cellPrice.setAttribute('id', 'price');
+        
+        var test = sessionStorage.getItem();
+        
+        console.log(shoppingCartKeys);
+        
+        cellName.innerHTML      = sessionStorage.getItem(i);
+        cellAmount.innerHTML    = sessionStorage.getItem(i);
+        cellPrice.innerHTML     = sessionStorage.getItem(i);
+    }
+}
 
 };
 
 function validateForm() {
-    var myInput = document.forms["order"]["myInput"];   // naam
-    var myInput2 = document.forms["order"]["myInput2"];  // straat + huisnr
-    var myInput3 = document.forms["order"]["myInput3"];  // plaats
-    var area = document.forms["order"]["area"];      // telefoonnummer
-    var valid = true;                                 // validatie           
+    var myInput     = document.forms["order"]["myInput"];   // naam
+    var myInput2    = document.forms["order"]["myInput2"];  // straat + huisnr
+    var myInput3    = document.forms["order"]["myInput3"];  // plaats
+    var area        = document.forms["order"]["area"];      // telefoonnummer
+    var valid       = true;                                 // validatie           
 
 
     // Check if fields are empty
@@ -155,4 +180,9 @@ function validateForm() {
         valid = false;
     }
     return valid;
+}
+
+function storeSomething(row) {
+    sessionStorage.something = row;
+    
 }
