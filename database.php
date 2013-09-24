@@ -23,7 +23,7 @@ class Database {
 			$articles[] = $row;
 		}
 
-		return $articles;
+		return $articles; 
 	}
 
 	public function amountOfArticles(){
