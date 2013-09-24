@@ -8,28 +8,28 @@ window.onload = function()
     var inputs = document.getElementById('itemlist').getElementsByTagName('input');
     var totalTotalPrice = 0;
 
+
     var amounts = [];
 
-    var  totalpriceF = function(splittedPrice) {
-                    var newPrice = "";
-                    if(splittedPrice.length == 1) {
-                        newPrice = splittedPrice[0]+",00";
-                    } else {
-                        if(splittedPrice[1].length == 1) {
-                            newPrice = splittedPrice[0]+","+splittedPrice[1]+"0";
-                        } else {
-                            newPrice = splittedPrice[0]+","+splittedPrice[1];
-                        }
-                    }
+    var totalpriceF = function(splittedPrice) {
+        var newPrice = "";
+        if (splittedPrice.length == 1) {
+            newPrice = splittedPrice[0] + ",00";
+        } else {
+            if (splittedPrice[1].length == 1) {
+                newPrice = splittedPrice[0] + "," + splittedPrice[1] + "0";
+            } else {
+                newPrice = splittedPrice[0] + "," + splittedPrice[1];
+            }
+        }
 
-                    var newPriceParts = newPrice.split(",");
-                    if(newPriceParts[1].length > 2) {
-                        newPrice = newPriceParts[0]+","+new String(newPriceParts[1].substring(0, 2));
-                    }
+        var newPriceParts = newPrice.split(",");
+        if (newPriceParts[1].length > 2) {
+            newPrice = newPriceParts[0] + "," + new String(newPriceParts[1].substring(0, 2));
+        }
 
-                    return newPrice;
-                };
-
+        return newPrice;
+    };
 
     // console.log("INPUTS: ", inputs);
     for (var i = 0; i < inputs.length; i++) {
@@ -74,8 +74,6 @@ window.onload = function()
                 var shoppingcar = document.getElementById('shoppingcar').tBodies.item(0).appendChild(parent);
 
                 totalTotalPrice = parseFloat(totalTotalPrice) + parseFloat(totalprice);
-                // totalTotalPricePieces = new String(totalTotalPrice).split(",");
-                // totalTotalPrice = totalpriceF(totalTotalPricePieces);
                 document.getElementById('totaltotal').innerHTML = totalpriceF(new String(totalTotalPrice).split("."));
 
                 var newInputField = parent.getElementsByTagName('input')[0];
@@ -83,6 +81,7 @@ window.onload = function()
             }
         }, false);
     }
+
 
     function addChangeEventToShopCarItem(item, indexOld) {
         var oldValue = parseFloat(this)
@@ -105,6 +104,7 @@ window.onload = function()
             this.parentNode.parentNode.children[3].innerHTML = totalPrice;
 
             document.getElementById('totaltotal').innerHTML = totalpriceF(new String(totalTotalPrice).split("."));
+
         }, false);
     }
 
@@ -112,7 +112,7 @@ window.onload = function()
         // console.log('VALIDATE: ', value);
         value = value.replace(" ", "");
 
-        if(value.length > 0) {
+        if (value.length > 0) {
             // console.log("VALUE FOUND: ", value);
             var regExpr = new RegExp("^[0-9]*$");
             if (regExpr.test(value)) {
@@ -121,7 +121,47 @@ window.onload = function()
             }
             // console.log("TESTED AND FAILED: ", value);
         }
-        
+
         return false;
     }
+
+
 };
+
+function validateForm() {
+    var myInput = document.forms["order"]["myInput"];   // naam
+    var myInput2 = document.forms["order"]["myInput2"];  // straat + huisnr
+    var myInput3 = document.forms["order"]["myInput3"];  // plaats
+    var area = document.forms["order"]["area"];      // telefoonnummer
+    var valid = true;                                 // validatie           
+
+
+    // Check if fields are empty
+    if (myInput.value == null || myInput.value == "") {
+        myInput.style.border = "1px solid red";
+        valid = false;
+    }
+
+    if (myInput2.value == null || myInput2.value == "") {
+        myInput2.style.border = "1px solid red";
+        valid = false;
+    }
+
+    if (myInput3.value == null || myInput3.value == "") {
+        myInput3.style.border = "1px solid red";
+        valid = false;
+    }
+
+    if (area.value == null || area.value == "") {
+        area.style.border = "1px solid red";
+        valid = false;
+    }
+
+    // Check if telnr is valid
+    var regExpTel = /^0[0-9]{9}$/i;
+    if (!regExpTel.test(area.value)) {
+        area.style.border = "1px solid red";
+        valid = false;
+    }
+    return valid;
+}
